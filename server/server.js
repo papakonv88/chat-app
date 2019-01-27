@@ -20,14 +20,15 @@ io.on('connection', (socket)=> {
     console.log('User was disconnected');
   }); 
     
-   socket.emit('newMessage', {
-      from: 'Bill',
-      text: 'This is an incoming message from the server',
-      createdAt: new Date().toLocaleTimeString()
-   });
+
     
    socket.on('createMessage', (data) => {
-      console.log('create message: ', data); 
+      console.log('create message: ', data);
+       io.emit('newMessage', {
+           from: data.from,
+           text: data.text,
+           createdAt: new Date().toLocaleTimeString()
+       });
    });
  
 });

@@ -2,11 +2,7 @@ var socket = io();
         
 socket.on('connect', function () {
        console.log('Connected the server'); 
-    
-    socket.emit('createMessage', {
-       from: 'Eui',
-       text: 'Incoming message from client'
-    });
+
     
     });
         
