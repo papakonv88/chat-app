@@ -16,6 +16,19 @@ app.use(express.static(publicPath));
 io.on('connection', (socket)=> {
    console.log('New user connected');
     
+    socket.emit('newMessage', {
+       from: "Admin",
+       text: "Welcome to the chat app"
+    });
+    
+    
+    socket.broadcast.emit('newMessage', {
+       from: "Admin",
+       text: "New user joined",
+       createdAt: new Date().toLocaleTimeString()
+    });
+    
+    
    socket.on('disconnect', ()=> {
     console.log('User was disconnected');
   }); 
