@@ -1,16 +1,74 @@
 <!DOCTYPE html>
-    
+
 <html>
-    
+
 <head>
-<meta charset="utf-8">
+  <meta charset="utf-8">
 </head>
+
 <body>
-   <p>Hello world!</p> 
+<div id="app">{{message}}</div>
     
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="/js/index.js"></script>
+    <form id="chatapp">
+    <p>
+    <input type="text" v-model='msg'>
+    <button v-on:click='all'>Push</button>
+    </p>
+    <ul>
+      <li v-for='(message) in incomings'>
+       {{message}}
+      </li>    
+    </ul>
+    </form>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/libs/vue.min.js"></script>
+  <script src="/js/index.js"></script>
+    
+    <script>  
+    
+    new Vue({
+        el: '#app',
+        data: {
+         message: 'Welcome to the chatapp'   
+        }
+    })
+        
+    new Vue ({
+        el: '#chatapp',
+        data: {
+            msg: '',
+            incomings: []
+        },
+        methods: {
+            submit: function (e) {
+                e.preventDefault()
+                
+               socket.emit('createMessage', {
+                   from: 'Bob',
+                   text: this.msg
+               }, function (data) {
+                    console.log('Got it', data);
+                   })
+                  },
+            addNewMessage: function () {
+                this.incomings.push({
+                 from: 'Bobby',
+                 text: this.msg,
+                 createdAt: new Date().toLocaleTimeString()
+                })
+                this.msg=''
+            },
+            all: function (e) {
+                this.submit(e);
+                this.addNewMessage();
+            }
+        }
+    })
+    
+    
+    </script>
     
 </body>
-       
+
 </html>

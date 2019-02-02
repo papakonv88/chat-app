@@ -30,9 +30,10 @@ io.on('connection', (socket)=> {
     
 
     
-   socket.on('createMessage', (data) => {
+   socket.on('createMessage', (data, callback) => {
       console.log('create message: ', data);
        io.emit('newMessage', generateMessage(data.from, data.text));
+       callback('This comes from server');
    });
  
 });

@@ -15,7 +15,8 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.4",
-    "socket.io": "^2.2.0"
+    "socket.io": "^2.2.0",
+    "vue": "^2.5.22"
   },
   "devDependencies": {
     "expect": "^24.0.0",
