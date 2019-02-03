@@ -12,14 +12,14 @@
     <form id="chatapp">
     <p>
     <input type="text" v-model='msg'>
-    <button v-on:click='all'>Push</button>
+    <button v-on:click='submit'>Push</button>
     </p>
-    <ul>
-      <li v-for='(message) in incomings'>
-       {{message}}
+    </form>
+     <ul id="socket_on">
+      <li v-for='message in even(incomings)'>
+       {{ message }}
       </li>    
     </ul>
-    </form>
 
   <script src="/socket.io/socket.io.js"></script>
   <script src="/js/libs/vue.min.js"></script>
@@ -38,7 +38,6 @@
         el: '#chatapp',
         data: {
             msg: '',
-            incomings: []
         },
         methods: {
             submit: function (e) {
@@ -50,20 +49,28 @@
                }, function (data) {
                     console.log('Got it', data);
                    })
-                  },
-            addNewMessage: function () {
-                this.incomings.push({
-                 from: 'Bobby',
-                 text: this.msg,
-                 createdAt: new Date().toLocaleTimeString()
-                })
-                this.msg=''
-            },
-            all: function (e) {
-                this.submit(e);
-                this.addNewMessage();
-            }
+                 this.msg=''
+                  }
         }
+       })
+        
+    new Vue ({
+        el: '#socket_on',
+        data: {
+            incomings : []
+        },
+        methods: {
+            even: function (incomings) {
+             socket.on('newMessage',function (message) {
+                incomings.push({
+                    from: message.from,
+                    text: message.text,
+                    createdAt: message.createdAt
+                   })
+                })
+                return incomings
+               }
+        }   
     })
     
     

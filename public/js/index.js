@@ -9,6 +9,15 @@ socket.on('disconnect', function () {
 });
 
 /*
+socket.emit('createMessage', {
+    from,
+    text
+}, function (data) {
+    console.log('Got it', data);
+});
+*/
+
+/*
 socket.on('newMessage', function (message) {
   console.log('newMessage', message);
   var li = jQuery('<li></li>');
