@@ -7,8 +7,7 @@
 </head>
 
 <body>
-<div id="app">{{message}}</div>
-    
+    <div id="app">{{message}}</div>
     <form id="chatapp">
     <p>
     <input type="text" v-model='msg'>
@@ -16,7 +15,7 @@
     </p>
     </form>
      <ul id="socket_on">
-      <li v-for='message in even(incomings)'>
+      <li v-for='message in incomings'>
        {{ message }}
       </li>    
     </ul>
@@ -24,58 +23,7 @@
   <script src="/socket.io/socket.io.js"></script>
   <script src="/js/libs/vue.min.js"></script>
   <script src="/js/index.js"></script>
-    
-    <script>  
-    
-    new Vue({
-        el: '#app',
-        data: {
-         message: 'Welcome to the chatapp'   
-        }
-    })
-        
-    new Vue ({
-        el: '#chatapp',
-        data: {
-            msg: '',
-        },
-        methods: {
-            submit: function (e) {
-                e.preventDefault()
-                
-               socket.emit('createMessage', {
-                   from: 'Bob',
-                   text: this.msg
-               }, function (data) {
-                    console.log('Got it', data);
-                   })
-                 this.msg=''
-                  }
-        }
-       })
-        
-    new Vue ({
-        el: '#socket_on',
-        data: {
-            incomings : []
-        },
-        methods: {
-            even: function (incomings) {
-             socket.on('newMessage',function (message) {
-                incomings.push({
-                    from: message.from,
-                    text: message.text,
-                    createdAt: message.createdAt
-                   })
-                })
-                return incomings
-               }
-        }   
-    })
-    
-    
-    </script>
-    
+
 </body>
 
 </html>
