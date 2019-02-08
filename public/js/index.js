@@ -11,6 +11,10 @@ socket.on('disconnect', function () {
  socket.on('newMessage',function (message) {
         appSocket.incomings.push(message);
         })
+
+socket.on('newLocationMessage', function (message) {
+    appSocket.geolinks.push(message);
+   })
         
         
     new Vue({
@@ -25,7 +29,7 @@ socket.on('disconnect', function () {
     new Vue ({
         el: '#chatapp',
         data: {
-            msg: '',
+            msg: ''
         },
         methods: {
             submit: function (e) {
@@ -41,11 +45,35 @@ socket.on('disconnect', function () {
                   }
         }
        })
+    new Vue ({
+        el: '#locator',
+        data : {
+           coords: '' 
+        },
+        methods : {
+            locate: function () {
+                
+                if (!navigator.geolocation) {
+                return alert('Your browser do not support geolocation!');
+                  }
+                
+                navigator.geolocation.getCurrentPosition(function (position) {
+                socket.emit('createLocationMessage', {
+                  lat: position.coords.latitude,
+                  lon: position.coords.longitude
+                   })
+                }, function (err) {
+                    return alert('Access denied!');
+                });
+            }
+        }
+    })
         
   var appSocket = new Vue ({
         el: '#socket_on',
         data: {
-            incomings : []
+            incomings : [],
+            geolinks : []
         },
         methods: {
             
