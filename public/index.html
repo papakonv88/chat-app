@@ -4,26 +4,32 @@
 
 <head>
   <meta charset="utf-8">
+  <link rel="stylesheet" href="/css/styles.css">
 </head>
-<body>
-    <div id="app">{{message}}</div>
-    <form id="chatapp">
-    <p>
-    <input type="text" v-model='msg'>
-    <button v-on:click='submit'>Push</button>
-    </p>
-    </form>
-    <button id="locator" v-on:click='locate'>Send location</button>
-     <ol id="socket_on">
-      <li v-for='message in incomings'>
-       {{message.from}}: {{message.text}} 
-      </li>
-      <li v-for='message in geolinks'>
-       {{message.from}}: <a v-bind:href="message.url" target="_blank">Click to see my location</a>
-      </li>
-    </ol>    
-<script src="/socket.io/socket.io.js"></script>
-<script src="/js/libs/vue.min.js"></script>
-<script src="/js/index.js"></script>
+
+<body class="chat">
+
+  <div class="chat__sidebar">
+    <h3>People</h3>
+    <div id="users"></div>
+  </div>
+
+  <div class="chat__main">
+    <ol id="messages" class="chat__messages"></ol>
+
+    <div class="chat__footer">
+      <form id="message-form">
+        <input name="message" type="text" placeholder="Message" autofocus autocomplete="off"/>
+        <button>Send</button>
+      </form>
+      <button id="send-location">Send location</button>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/libs/jquery-3.1.0.min.js"></script>
+  <script src="/js/index.js"></script>
+  <script src="/js/libs/moment.js"></script>
 </body>
+
 </html>
