@@ -9,24 +9,42 @@ socket.on('disconnect', function () {
 });
 
 socket.on('newMessage', function (message) {
-  var formattedTime = moment(message.createdAt).format("h:m a");
-  console.log('newMessage', message);
+/*  var formattedTime = moment(message.createdAt).format('h:mm a');
   var li = jQuery('<li></li>');
   li.text(`${message.from} ${formattedTime}: ${message.text}`);
 
-  jQuery('#messages').append(li);
+  jQuery('#messages').append(li);*/
+    var formattedTime = moment(message.createdAt).format('h:mm a');
+    app.inputs.push({from: message.from, message: message.text, createdAt: formattedTime})
 });
 
 socket.on('newLocationMessage', function (message) {
-  var formattedTime = moment(message.createdAt).format("h:m a");
+    
+    
+ /* var formattedTime = moment(message.createdAt).format('h:mm a');
   var li = jQuery('<li></li>');
   var a = jQuery('<a target="_blank">My current location</a>');
 
   li.text(`${message.from} ${formattedTime}: `);
   a.attr('href', message.url);
   li.append(a);
-  jQuery('#messages').append(li);
+  jQuery('#messages').append(li);*/
+    var formattedTime = moment(message.createdAt).format('h:mm a');
+    app.inputs.push({from: message.from, url: message.url, createdAt: formattedTime})
 });
+
+var app = new Vue ({
+    el: '#app',
+    data: {
+       inputs:[]
+    }   
+})
+
+Vue.component ('new-line', {
+ props: ['input'],
+ template: '<div class="all"><div class="message__title"><h4>{{ input.from }}</h4><span>{{ input.createdAt }}<span/></div><div v-if="input.message != null" class="message__body"><p>{{ input.message }}</p></div><div v-else class="message__body"><p><a v-bind:href="input.url" target="_blank">My current location</a></p></div></div>'
+})
+
 
 jQuery('#message-form').on('submit', function (e) {
   e.preventDefault();
@@ -52,8 +70,8 @@ locationButton.on('click', function () {
   navigator.geolocation.getCurrentPosition(function (position) {
     locationButton.removeAttr('disabled').text('Send location');
     socket.emit('createLocationMessage', {
-      latitude: position.coords.latitude,
-      longitude: position.coords.longitude
+      lat: position.coords.latitude,
+      lon: position.coords.longitude
     });
   }, function () {
     locationButton.removeAttr('disabled').text('Send location');

@@ -15,7 +15,14 @@
   </div>
 
   <div class="chat__main">
-    <ol id="messages" class="chat__messages"></ol>
+    <ol id="messages" class="chat__messages">
+      <div id="app">
+    <new-line
+        v-for="input in inputs"
+        v-bind:input="input"
+    ></new-line>
+      </div>
+</ol>
 
     <div class="chat__footer">
       <form id="message-form">
@@ -25,11 +32,11 @@
       <button id="send-location">Send location</button>
     </div>
   </div>
-
+  <script src="/js/libs/vue.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
   <script src="/js/libs/jquery-3.1.0.min.js"></script>
-  <script src="/js/index.js"></script>
   <script src="/js/libs/moment.js"></script>
+  <script src="/js/index.js"></script>
 </body>
 
 </html>
