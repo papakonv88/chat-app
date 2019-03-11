@@ -1,5 +1,21 @@
 var socket = io();
 
+function scrolltoBottom () {
+    var heightAll = messages.scrollHeight;
+    var heightCl = messages.clientHeight;
+    var heighttoTop = messages.scrollTop;
+    console.log(heightAll);
+    console.log(heightCl);
+    console.log(heighttoTop);
+    
+    if (heightCl + heighttoTop + 100 >= heightAll) {
+        messages.scrollTop = heightAll - messages.clientHeight;
+    }
+};
+
+
+
+
 socket.on('connect', function () {
   console.log('Connected to server');
 });
@@ -16,6 +32,7 @@ socket.on('newMessage', function (message) {
   jQuery('#messages').append(li);*/
     var formattedTime = moment(message.createdAt).format('h:mm a');
     app.inputs.push({from: message.from, message: message.text, createdAt: formattedTime})
+    scrolltoBottom();
 });
 
 socket.on('newLocationMessage', function (message) {
@@ -31,6 +48,7 @@ socket.on('newLocationMessage', function (message) {
   jQuery('#messages').append(li);*/
     var formattedTime = moment(message.createdAt).format('h:mm a');
     app.inputs.push({from: message.from, url: message.url, createdAt: formattedTime})
+    scrolltoBottom();
 });
 
 var app = new Vue ({
@@ -78,3 +96,4 @@ locationButton.on('click', function () {
     alert('Unable to fetch location.');
   });
 });
+
