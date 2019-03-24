@@ -13,7 +13,13 @@
 
   <div class="chat__sidebar">
     <h3>People</h3>
-    <div id="users"></div>
+    <div id="users">
+        <ol>
+         <li v-for="input in inputs">
+             {{ input }}
+         </li>
+        </ol>
+    </div>
   </div>
 
   <div class="chat__main">
@@ -39,6 +45,7 @@
   <script src="/js/libs/jquery-3.1.0.min.js"></script>
   <script src="/js/libs/moment.js"></script>
   <script src="/js/index.js"></script>
+  <script src="/js/libs/deparam.js"></script>
 </body>
 
 </html>

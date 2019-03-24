@@ -17,11 +17,29 @@ function scrolltoBottom () {
 
 
 socket.on('connect', function () {
+    
+  var params = jQuery.deparam(window.location.search);
   console.log('Connected to server');
+  console.log(params);
+    
+    socket.emit('join', params, function (err) {
+            if (err) {
+             alert(err);
+             window.location.href = "/";
+            } 
+        else {
+             console.log('no error'); 
+            console.log(params);
+            }
+         });
 });
 
 socket.on('disconnect', function () {
   console.log('Disconnected from server');
+});
+
+socket.on('updateUserList', function (users) {
+   userlist.inputs = users;
 });
 
 socket.on('newMessage', function (message) {
@@ -57,6 +75,14 @@ var app = new Vue ({
        inputs:[]
     }   
 })
+
+var userlist = new Vue ({
+    el: '#users',
+    data: {
+        inputs: []
+    }
+})
+
 
 Vue.component ('new-line', {
  props: ['input'],
